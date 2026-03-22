@@ -9,9 +9,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CalPal API", redirect_slashes=False)
 
+origins = [
+    "https://calpal.jprincip.me",      # For production dashboard
+    "http://localhost:3000",           # For local Next.js development
+    "http://127.0.0.1:3000",           # For Alternative local address
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
