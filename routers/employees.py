@@ -1,12 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from database import get_db_connection
 
-router = APIRouter(
-    prefix="/employees",  # All routes in this file start with /employees
-    tags=["Employees"]    # Groups Endpoints in the SwaggerUI auto-generated docs
-)
+router = APIRouter()
 
-@router.get("/")
+@router.get("")
 def get_all_employees():
     try:
         conn = get_db_connection()
