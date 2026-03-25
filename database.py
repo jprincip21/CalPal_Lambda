@@ -1,10 +1,28 @@
 import os
 import mysql.connector
+from mysql.connector import Error
 
-def get_db_connection():
-    return mysql.connector.connect(
-        host=os.environ['DB_HOST'],
-        user=os.environ['DB_USER'],
-        password=os.environ['DB_PASS'],
-        database=os.environ['DB_NAME']
-    )
+# Singleton Database connection
+class DBConnection():
+    __instance = None
+    __connection = None
+
+    def __new__(cls):
+        if (cls.__instance is None):
+            cls.__instance = super(DBConnection, cls).__new__(cls)
+        return cls.__instance
+    
+    def get_db_connection(self):
+        if self.__connection is None or not self.__connection.is_connected():
+            try:
+                self.__connection = mysql.connector.connect(
+                                    host=os.environ['DB_HOST'],
+                                    user=os.environ['DB_USER'],
+                                    password=os.environ['DB_PASS'],
+                                    database=os.environ['DB_NAME']
+                                )
+            except Error as e:
+                print(f"Error while connecting to MySQL: {e}")
+                raise e
+        return self.__connection
+db_manager = DBConnection()

@@ -1,5 +1,5 @@
 # SFWRTECH 4SA3 - Software Architecture
-# CalPal Project
+# CalPal Project Lambda
 # Jonathan Principato (400527847)
 
 from fastapi import FastAPI

@@ -1,12 +1,12 @@
 from fastapi import APIRouter, HTTPException
-from database import get_db_connection
+from database import db_manager
 
 router = APIRouter()
 
 @router.get("")
 def get_all_employees():
     try:
-        conn = get_db_connection()
+        conn = db_manager.get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM Employees")
         result = cursor.fetchall()
