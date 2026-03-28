@@ -1,8 +1,16 @@
+# SFWRTECH 4SA3 - Software Architecture
+# CalPal Project - Database Connection
+# Jonathan Principato (400527847)
+
 import os
 import mysql.connector
 from mysql.connector import Error
 
 # Singleton Database connection
+# Creational Pattern
+# Used to ensure only one db connection is created on each lambda.
+# If a lambda is "Warm" it will cut down some time on returning api calls.
+
 class DBConnection():
     __instance = None
     __connection = None
