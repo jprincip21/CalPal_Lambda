@@ -22,30 +22,43 @@ calpal-api/
 ## 2. Deployment Package
 
 Create a dist/ folder and copy your code files and folders into it.
+Create a dependencies folder
+Create a python folder inside dependencies
 
 ## 3. Install Dependencies
 
 Run 
 ```bash
-pip install fastapi mangum mysql-connector-python -t dist/ to bundle libraries.
+pip install fastapi mangum mysql-connector-python -t dependencies/python .
 ```
-## 4. Compress
+to bundle libraries
+
+## 4. Create Dependencies Layer
+Select python folder, compress it and rename to deps.zip (when you open you should see a python folder with dependencies inside).
+
+## 5. Create Layer
+Navigate to Lambda->Layers, create a custom layer and upload this zip file.
+
+## 6. Compress
 Select all files inside the `dist/` folder and compress them into a single .zip file.
 
-## 5. Create Lambda
+## 7. Create Lambda
 Use Python runtime and x86_64 architecture in the AWS Lambda Console.
 
-## 6. Upload
+## 8. Upload
 Upload your .zip file via the "Code" tab in the Lambda dashboard.
 
-## 7. Set Handler
+## 9. Set Handler
 Change the Runtime Setting "Handler" to main.handler so AWS can find your code.
 
-## 8. Secure Config
+## 10. Set Layer
+Scroll to the bottom of your code and attach the layer you created to your lambda.
+
+## 10. Secure Config
 Add DB_HOST, DB_USER, DB_PASS, and DB_NAME to Lambda Environment Variables.
 
-## 9. Networking
+## 11. Networking
 Configure the Lambda VPC or Security Group to allow outbound traffic to your RDS on port 3306.
 
-# 10. Expose API
+# 12. Expose API
 Create an AWS API Gateway (HTTP API) and point a `$default` or `/{proxy+}` route to your Lambda.
