@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from database import db_manager
 from repositories.employee_repository import EmployeeRepository
 from models.employee import Employee
-from datetime import date
+from datetime import date, datetime
 
 router = APIRouter()
 
@@ -55,6 +55,11 @@ def get_employee(id: int):
 
 @router.post("")
 def create_employee(request: EmployeeRequest):
+    valid_date = request.hire_date
+    try:
+        datetime.strptime(valid_date, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        valid_date = datetime.now().strftime("%Y-%m-%d")
     try:
         employee = Employee(
             id=None,
@@ -70,7 +75,7 @@ def create_employee(request: EmployeeRequest):
             job_title=request.job_title,
             wage_type=request.wage_type,
             wage=request.wage,
-            hire_date=str(date.today()),
+            hire_date=valid_date,
             is_active=request.is_active
         )
         employee_repo.create(employee)
@@ -80,10 +85,18 @@ def create_employee(request: EmployeeRequest):
 
 @router.put("/{id}")
 def update_employee(id: int, request: EmployeeRequest):
+    
     try:
         existing = employee_repo.get(id)
         if existing is None:
             raise HTTPException(status_code=404, detail="Employee not found")
+        
+        valid_date = request.hire_date
+        try:
+            datetime.strptime(valid_date, "%Y-%m-%d")
+        except (ValueError, TypeError):
+            valid_date = datetime.now().strftime("%Y-%m-%d")
+
         employee = Employee(
             id=id,
             first_name=request.first_name,
@@ -98,7 +111,7 @@ def update_employee(id: int, request: EmployeeRequest):
             job_title=request.job_title,
             wage_type=request.wage_type,
             wage=request.wage,
-            hire_date=request.hire_date,
+            hire_date=valid_date,
             is_active=request.is_active
         )
         employee_repo.update(employee)
