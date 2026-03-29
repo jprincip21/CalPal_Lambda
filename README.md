@@ -37,7 +37,7 @@ to bundle libraries
 Select python folder, compress it and rename to deps.zip (when you open you should see a python folder with dependencies inside).
 
 ## 5. Create Layer
-Navigate to Lambda->Layers, create a custom layer and upload this zip file.
+Navigate to Lambda->Layers, create a custom layer and upload the deps zip file.
 
 ## 6. Compress
 Select all files inside the `dist/` folder and compress them into a single .zip file.
