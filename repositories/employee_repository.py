@@ -26,10 +26,16 @@ class EmployeeRepository(Repository):
         return Employee(**result)
     
     def get_all(self) -> list[Employee]:
-        """Retrieve all employees"""
+        """Retrieve all employees with location id"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM Employees")
+        # Left Join keeps everything from left table (Employees) 
+        # and only adds the right table (Employee_Locations location_id) 
+        # where the coniditon is met otherwise its null
+        cursor.execute("""
+            SELECT e.*, el.location_id 
+            FROM Employees e
+            LEFT JOIN Employee_Locations el ON e.id = el.employee_id""")
         result = cursor.fetchall()
         cursor.close()
         return [Employee(**row) for row in result]
