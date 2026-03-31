@@ -32,6 +32,7 @@ class EmployeeRequest(BaseModel):
     wage: float
     hire_date: str
     is_active: bool
+    location_id: int | None = None
 
 @router.get("")
 def get_all_employees():
@@ -78,7 +79,7 @@ def create_employee(request: EmployeeRequest):
             hire_date=valid_date,
             is_active=request.is_active
         )
-        employee_repo.create(employee)
+        employee_repo.create(employee, request.location_id)
         return {"message": "Employee created successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -114,7 +115,7 @@ def update_employee(id: int, request: EmployeeRequest):
             hire_date=valid_date,
             is_active=request.is_active
         )
-        employee_repo.update(employee)
+        employee_repo.update(employee, request.location_id)
         return {"message": "Employee updated successfully"}
     except HTTPException:
         raise

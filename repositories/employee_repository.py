@@ -34,7 +34,7 @@ class EmployeeRepository(Repository):
         cursor.close()
         return [Employee(**row) for row in result]
 
-    def create(self, entity: Employee) -> None:
+    def create(self, entity: Employee, location_id: int | None = None) -> None:
         """Insert a new employee into the database"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor()
@@ -60,10 +60,19 @@ class EmployeeRepository(Repository):
             info['hire_date'],
             info['is_active']
         ))
+
+        # Create Employee Location Link
+        new_employee_id = cursor.lastrowid
+        if location_id is not None:
+            cursor.execute("""
+                INSERT INTO Employee_Locations (employee_id, location_id) 
+                VALUES(%s, %s)
+            """, (new_employee_id, location_id))
+
         conn.commit()
         cursor.close()
 
-    def update(self, entity: Employee) -> None:
+    def update(self, entity: Employee, location_id: int | None = None) -> None:
         """Update an existing employee in the database"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor()
@@ -102,6 +111,26 @@ class EmployeeRepository(Repository):
             info['is_active'],
             info['id']
         ))
+
+        # Update old Employee_Location Link and Create a new one
+        if location_id is not None:
+
+            cursor.execute("""
+                SELECT employee_id FROM Employee_Locations WHERE employee_id = %s
+                """, (info['id'], ))
+            existing_link = cursor.fetchone()
+
+            if existing_link:
+                cursor.execute("""
+                    DELETE FROM Employee_Locations WHERE employee_id = %s
+                    """, (info['id'],))
+                
+            cursor.execute("""
+                INSERT INTO Employee_Locations (employee_id, location_id)
+                VALUES (%s, %s)
+                """, (info['id'], location_id))
+
+
         conn.commit()
         cursor.close()
 
