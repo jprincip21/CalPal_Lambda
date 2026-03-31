@@ -8,7 +8,6 @@ from database import db_manager
 from repositories.schedule_repository import ScheduleRepository
 from models.schedule import Schedule
 
-
 router = APIRouter()
 
 # Design Pattern: Repository Pattern
@@ -37,6 +36,8 @@ def get_schedule(id: int):
         if schedule is None:
             raise HTTPException(status_code=404, detail="Schedule not found")
         return schedule.get_schedule_info()
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
@@ -51,12 +52,19 @@ def create_schedule(request: ScheduleRequest):
             state='draft'
         )
         schedule_repo.create(schedule)
+        return {"message": "Schedule created successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-@router.delete("")
+@router.delete("/{id}")
 def delete_schedule(id: int):
     try:
+        existing = schedule_repo.get(id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="Schedule not found")
         schedule_repo.delete(id)
+        return {"message": "Schedule Deleted Successfully"}
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
