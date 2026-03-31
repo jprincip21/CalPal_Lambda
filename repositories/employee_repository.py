@@ -14,6 +14,7 @@ class EmployeeRepository(Repository):
     def __init__(self, db):
         super().__init__(db)
 
+# DELETE IF UNUSED
     def get(self, id: int) -> Employee:
         """Retrieve a single employee by ID"""
         conn = self.db.get_db_connection()

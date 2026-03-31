@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from database import db_manager
 from repositories.employee_repository import EmployeeRepository
 from models.employee import Employee
-from datetime import date, datetime
+from datetime import datetime
 
 router = APIRouter()
 
@@ -42,6 +42,7 @@ def get_all_employees():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# DELETE IF UNUSED
 @router.get("/{id}")
 def get_employee(id: int):
     try:
