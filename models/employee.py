@@ -57,37 +57,3 @@ class Employee:
             "hire_date": self.__hire_date,
             "is_active": self.__is_active
         }
-
-
-    # May not use (Delete if Unused)
-    def update_employee_info(self, 
-                 id, 
-                 first_name, 
-                 last_name, 
-                 address, 
-                 city,
-                 province_state_region, 
-                 country, 
-                 postal_zip_code,
-                 phone_number,
-                 email,
-                 job_title, 
-                 wage_type,
-                 wage,
-                 hire_date,
-                 is_active):
-        self.__id = id
-        self.__first_name = first_name
-        self.__last_name = last_name
-        self.__address = address
-        self.__city = city
-        self.__province_state_region = province_state_region
-        self.__country = country
-        self.__postal_zip_code = postal_zip_code
-        self.__phone_number = phone_number
-        self.__email = email
-        self.__job_title = job_title
-        self.__wage_type = wage_type
-        self.__wage = wage
-        self.__hire_date = hire_date
-        self.__is_active = is_active
