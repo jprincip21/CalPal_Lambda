@@ -18,7 +18,12 @@ class ScheduleRepository(Repository):
         """Retrieve a single schedule by id"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM Schedules WHERE id = %s", (id,))
+        cursor.execute("""
+            SELECT s.*, wl.name as location_name 
+            FROM Schedules s 
+            LEFT JOIN Work_Locations wl ON s.location_id = wl.id
+            WHERE s.id = %s
+        """, (id,))
         result = cursor.fetchone()
         cursor.close()
         if result is None:
@@ -29,7 +34,11 @@ class ScheduleRepository(Repository):
         """Retrieve all schedules"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * from Schedules")
+        cursor.execute("""
+            SELECT s.*, wl.name as location_name 
+            FROM Schedules s
+            LEFT JOIN Work_Locations wl ON s.location_id = wl.id
+        """)
         result = cursor.fetchall()
         cursor.close()
         return [Schedule(**row) for row in result]
