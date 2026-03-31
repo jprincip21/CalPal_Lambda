@@ -4,7 +4,7 @@
 
 from fastapi import FastAPI
 from mangum import Mangum
-from routers import employees, locations 
+from routers import employees, locations, schedules 
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CalPal API", redirect_slashes=False)
@@ -27,9 +27,14 @@ app.add_middleware(
 app.include_router(employees.router, 
                     prefix="/employees", # All routes in this file start with /employees
                     tags=["Employees"]) # Groups Endpoints in the SwaggerUI auto-generated docs
+
 app.include_router(locations.router,
                    prefix="/locations",
                    tags=["Locations"])
+
+app.include_router(schedules.router,
+                   prefix="/schedules",
+                   tags=["Schedules"])
 
 @app.get("/")
 def root():
