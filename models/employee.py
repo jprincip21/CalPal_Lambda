@@ -22,7 +22,8 @@ class Employee:
                  wage_type,
                  wage,
                  hire_date,
-                 is_active):
+                 is_active,
+                 location_id=None):
         self.__id = id
         self.__first_name = first_name
         self.__last_name = last_name
@@ -38,6 +39,7 @@ class Employee:
         self.__wage = wage
         self.__hire_date = hire_date
         self.__is_active = is_active
+        self.__location_id = location_id
 
     def get_employee_info(self):
         return {
@@ -55,5 +57,6 @@ class Employee:
             "wage_type": self.__wage_type,
             "wage": self.__wage,
             "hire_date": self.__hire_date,
-            "is_active": self.__is_active
+            "is_active": self.__is_active,
+            "location_id": self.__location_id
         }
