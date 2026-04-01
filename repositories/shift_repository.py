@@ -12,7 +12,7 @@ from models.shift import Shift
 
 class ShiftRepository(Repository):
     def __init__(self, db):
-        super.__init__(db)
+        super().__init__(db)
 
     # DELETE IF UNUSED
     def get(self, id: int) -> Shift:
@@ -28,8 +28,8 @@ class ShiftRepository(Repository):
     
     # SET to pass if unused
     # WE WILL PROBABLY ONLY BE USING GET BY SCHEDULE ID
-    def get_one(self) -> Shift:
-        """Retreive all single shifts by id"""
+    def get_all(self) -> Shift:
+        """Retreive all shifts"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM Shifts")
@@ -37,12 +37,13 @@ class ShiftRepository(Repository):
         cursor.close()
         return [Shift(**row) for row in rows]
     
-    def get_by_schedule_id(self, schedule_id: int):
+    def get_by_schedule_id(self, schedule_id: int) -> list[Shift]:
         """Retreive all shifts assigned to a specific schedule"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM Shifts WHERE schedule_id = %s", (schedule_id,))
         rows = cursor.fetchall()
+        cursor.close()
         return [Shift(**row) for row in rows]
     
     def create(self, entity: Shift) -> None:
@@ -51,8 +52,8 @@ class ShiftRepository(Repository):
         cursor = conn.cursor()
         info = entity.get_shift_info()
         cursor.execute("""
-            INSET INTO Shifts
-            (scheudle_id, employee_id, date, start_time, end_time)
+            INSERT INTO Shifts
+            (schedule_id, employee_id, date, start_time, end_time)
             VALUES (%s, %s, %s, %s, %s)
         """, (
             info['schedule_id'],
@@ -78,11 +79,12 @@ class ShiftRepository(Repository):
             end_time = %s
             WHERE id = %s
             """, (
-                info['scheudle_id'],
+                info['schedule_id'],
                 info['employee_id'],
                 info['date'],
                 info['start_time'],
-                info['end_time']
+                info['end_time'],
+                info['id']
             ))
         conn.commit()
         cursor.close()
