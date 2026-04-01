@@ -31,7 +31,7 @@ def get_shifts_by_schedule_id(schedule_id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-    
+
 @router.post("")
 def create_shift(request: ShiftRequest):
     try:
@@ -76,6 +76,7 @@ def delete_shift(id: int):
         if existing is None:
             return HTTPException(status_code=404, detail="Shift not found")
         shift_repo.delete(id)
+        return {"message": "Shift Deleted Successfully"}
     except HTTPException:
         raise
     except Exception as e:
