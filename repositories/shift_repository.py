@@ -28,7 +28,7 @@ class ShiftRepository(Repository):
     
     # SET to pass if unused
     # WE WILL PROBABLY ONLY BE USING GET BY SCHEDULE ID
-    def get_all(self) -> Shift:
+    def get_all(self) -> list[Shift]:
         """Retreive all shifts"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
@@ -37,7 +37,7 @@ class ShiftRepository(Repository):
         cursor.close()
         return [Shift(**row) for row in rows]
     
-    def get_by_schedule_id(self, schedule_id: int) -> list[Shift]:
+    def get_shifts_by_schedule_id(self, schedule_id: int) -> list[Shift]:
         """Retreive all shifts assigned to a specific schedule"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
