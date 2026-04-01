@@ -4,7 +4,7 @@
 
 from fastapi import FastAPI
 from mangum import Mangum
-from routers import employees, locations, schedules 
+from routers import employees, locations, schedules, shifts
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="CalPal API", redirect_slashes=False)
@@ -35,6 +35,10 @@ app.include_router(locations.router,
 app.include_router(schedules.router,
                    prefix="/schedules",
                    tags=["Schedules"])
+
+app.include_router(shifts.router,
+                   prefix="/shifts",
+                   tags=["Shifts"])
 
 @app.get("/")
 def root():
