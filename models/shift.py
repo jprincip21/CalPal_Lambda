@@ -26,7 +26,7 @@ class Shift:
             "id": self.__id,
             "schedule_id": self.__schedule_id,
             "employee_id": self.__employee_id,
-            "date": self.__date,
-            "start_time": self.__start_time,
-            "end_time": self.__end_time
+            "date": str(self.__date), # Strings instead of date/time objects
+            "start_time": str(self.__start_time),
+            "end_time": str(self.__end_time)
         }
