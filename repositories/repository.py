@@ -10,6 +10,7 @@ class Repository(ABC):
     def __init__(self, db):
         self.db = db
 
+    # Remove if stays unused
     @abstractmethod
     def get(self, id):
         """Retrieve a single entity by id"""

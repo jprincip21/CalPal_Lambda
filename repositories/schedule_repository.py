@@ -14,6 +14,7 @@ class ScheduleRepository(Repository):
     def __init__(self, db):
         super().__init__(db)
 
+    # Remove if stays unused
     def get(self, id: int) -> Schedule:
         """Retrieve a single schedule by id"""
         conn = self.db.get_db_connection()
@@ -67,6 +68,7 @@ class ScheduleRepository(Repository):
     # So it only makes sense to delete the schedule and make a new one
     def update(self, entity: Schedule):
         """NOT IMPLEMENTED: Shedules cannot be updated"""
+        pass
 
     def update_state(self, id: int, state: str) -> None:
         """Update an existing schedules information"""

@@ -14,6 +14,7 @@ class LocationRepository(Repository):
     def __init__(self, db):
         super().__init__(db)
 
+    #remove if stays unused
     def get(self, id: int) -> Location:
         """Retrive a location by id"""
         conn = self.db.get_db_connection()
