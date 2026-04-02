@@ -54,7 +54,7 @@ class ShiftRepository(Repository):
         cursor.execute("""
             INSERT INTO Shifts
             (schedule_id, employee_id, start_datetime, end_datetime)
-            VALUES (%s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s)
         """, (
             info['schedule_id'],
             info['employee_id'],
