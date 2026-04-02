@@ -79,7 +79,6 @@ class ShiftRepository(Repository):
             """, (
                 info['schedule_id'],
                 info['employee_id'],
-                info['date'],
                 info['start_datetime'],
                 info['end_datetime'],
                 info['id']
