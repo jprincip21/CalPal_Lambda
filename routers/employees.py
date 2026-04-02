@@ -55,6 +55,14 @@ def get_employee(id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@router.get("/location/{location_id}")
+def get_employees_by_location_id(location_id: int):
+    try:
+        employees = employee_repo.get_employees_by_location_id(location_id)
+        return [e.get_employee_info() for e in employees]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @router.post("")
 def create_employee(request: EmployeeRequest):
     valid_date = request.hire_date

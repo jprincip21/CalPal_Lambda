@@ -27,12 +27,12 @@ class EmployeeRepository(Repository):
         return Employee(**result)
     
     def get_all(self) -> list[Employee]:
-        """Retrieve all employees with location id"""
+        """Retrieve all employees including their location id"""
         conn = self.db.get_db_connection()
         cursor = conn.cursor(dictionary=True)
         # Left Join keeps everything from left table (Employees) 
         # and only adds the right table (Employee_Locations location_id) 
-        # where the coniditon is met otherwise its null
+        # where the condiiton is met otherwise its null
         cursor.execute("""
             SELECT e.*, el.location_id 
             FROM Employees e
@@ -40,6 +40,22 @@ class EmployeeRepository(Repository):
         result = cursor.fetchall()
         cursor.close()
         return [Employee(**row) for row in result]
+    
+    # TODO: add a check for if the location exists before trying to grab employees for the location
+    def get_employees_by_location_id(self, location_id: int) -> list[Employee]:
+        """Retrieve all employees who belong to a certain location"""
+        conn = self.db.get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT * FROM Employees e
+            WHERE EXISTS (
+                SELECT 1 
+                FROM Employee_Locations el 
+                WHERE el.employee_id = e.id 
+                AND el.location_id = %s
+            );""", (location_id, ))
+        rows = cursor.fetchall()
+        return [Employee(**row) for row in rows]
 
     def create(self, entity: Employee, location_id: int | None = None) -> None:
         """Insert a new employee into the database"""
