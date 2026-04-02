@@ -11,22 +11,19 @@ class Shift:
                  id,
                  schedule_id,
                  employee_id,
-                 date,
-                 start_time,
-                 end_time):
+                 start_datetime,
+                 end_datetime):
         self.__id = id
         self.__schedule_id = schedule_id
         self.__employee_id = employee_id
-        self.__date = date
-        self.__start_time = start_time
-        self.__end_time = end_time
+        self.__start_datetime = start_datetime
+        self.__end_datetime = end_datetime
 
     def get_shift_info(self):
         return {
             "id": self.__id,
             "schedule_id": self.__schedule_id,
             "employee_id": self.__employee_id,
-            "date": str(self.__date), # Strings instead of date/time objects
-            "start_time": str(self.__start_time),
-            "end_time": str(self.__end_time)
+            "start_datetime": str(self.__start_datetime), # Strings instead of date/time objects
+            "end_datetime": str(self.__end_datetime)
         }

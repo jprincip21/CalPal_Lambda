@@ -19,9 +19,8 @@ shift_repo = ShiftRepository(db_manager)
 class ShiftRequest(BaseModel):
     schedule_id: int
     employee_id: int
-    date: str
-    start_time: str
-    end_time: str
+    start_datetime: str
+    end_datetime: str
 
 @router.get("/schedule/{schedule_id}")
 def get_shifts_by_schedule_id(schedule_id: int):
@@ -39,9 +38,8 @@ def create_shift(request: ShiftRequest):
             id=None,
             schedule_id=request.schedule_id,
             employee_id=request.employee_id,
-            date=request.date,
-            start_time=request.start_time,
-            end_time=request.end_time
+            start_datetime=request.start_datetime,
+            end_datetime=request.end_datetime
         )
         shift_repo.create(shift)
         return {"message": "Shift created successfully"}
@@ -58,9 +56,8 @@ def update_shift(id: int, request: ShiftRequest):
             id=id,
             schedule_id=request.schedule_id,
             employee_id=request.employee_id,
-            date=request.date,
-            start_time=request.start_time,
-            end_time=request.end_time
+            start_datetime=request.start_datetime,
+            end_datetime=request.end_datetime
         )
         shift_repo.update(shift)
         return {"message": "Shift updated successfully"}

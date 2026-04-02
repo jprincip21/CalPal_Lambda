@@ -53,14 +53,13 @@ class ShiftRepository(Repository):
         info = entity.get_shift_info()
         cursor.execute("""
             INSERT INTO Shifts
-            (schedule_id, employee_id, date, start_time, end_time)
+            (schedule_id, employee_id, start_datetime, end_datetime)
             VALUES (%s, %s, %s, %s, %s)
         """, (
             info['schedule_id'],
             info['employee_id'],
-            info['date'],
-            info['start_time'],
-            info['end_time']
+            info['start_datetime'],
+            info['end_datetime']
         ))
         conn.commit()
         cursor.close()
@@ -74,16 +73,15 @@ class ShiftRepository(Repository):
             UPDATE Shifts SET
             schedule_id = %s,
             employee_id = %s,
-            date = %s,
-            start_time = %s,
-            end_time = %s
+            start_datetime = %s,
+            end_datetime = %s
             WHERE id = %s
             """, (
                 info['schedule_id'],
                 info['employee_id'],
                 info['date'],
-                info['start_time'],
-                info['end_time'],
+                info['start_datetime'],
+                info['end_datetime'],
                 info['id']
             ))
         conn.commit()
