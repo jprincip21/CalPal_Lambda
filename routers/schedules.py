@@ -9,6 +9,8 @@ from repositories.schedule_repository import ScheduleRepository
 from models.schedule import Schedule
 from states.get_state import get_state
 from repositories.shift_repository import ShiftRepository
+from repositories.employee_repository import EmployeeRepository
+from services.notification_service import NotificationService
 
 router = APIRouter()
 
@@ -22,6 +24,9 @@ class ScheduleRequest(BaseModel):
     location_id: int
     start_date: str
     end_date: str
+
+class StateRequest(BaseModel):
+    action: str
 
 @router.get("")
 def get_all_schedules():
@@ -71,13 +76,13 @@ def delete_schedule(id: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-class ShiftRequest(BaseModel):
-    action: str
 
 @router.put("/{id}/state")
-def update_schedule_state(id: int, request: ShiftRequest):
+def update_schedule_state(id: int, request: StateRequest):
 
     shift_repo = ShiftRepository(db_manager)
+    employee_repo = EmployeeRepository(db_manager)
+    notification_service = NotificationService(schedule_repo, shift_repo, employee_repo)
 
     try:
         existing = schedule_repo.get(id)
@@ -91,8 +96,8 @@ def update_schedule_state(id: int, request: ShiftRequest):
         state = get_state(info["state"], id, schedule_repo, shift_repo)
 
         if request.action == "publish":
-            state.publish()
-        if request.action == "complete":
+            state.publish(notification_service)
+        elif request.action == "complete":
             state.complete()
 
         return {"message": f"Schedule state updated to {request.action} successfully"}   
