@@ -16,10 +16,10 @@ class DraftState(ScheduleState):
     def publish(self):
         shifts = self._shift_repo.get_shifts_by_schedule_id(self._schedule_id)
         if not shifts:
-            raise ValueError("Cannot Publish schedule with no shifts")
+            raise ValueError("Cannot Publish schedule with no shifts.")
         
         self._schedule_repo.update_state(self._schedule_id, "published")
 
     def complete(self):
-        raise ValueError("Cannot change state from draft to complete")
+        raise ValueError("Cannot change state from draft to complete.")
 
