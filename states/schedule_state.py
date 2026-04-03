@@ -24,8 +24,3 @@ class ScheduleState(ABC):
     def complete(self):
         """Change schedule to complete state"""
         pass
-
-    @abstractmethod
-    def get_current_state(self):
-        """Returns the current schedule state"""
-        pass

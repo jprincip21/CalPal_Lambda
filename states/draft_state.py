@@ -22,7 +22,4 @@ class DraftState(ScheduleState):
 
     def complete(self):
         raise ValueError("Cannot change state from draft to complete")
-    
-    def get_current_state(self):
-        return "draft"
 
