@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from database import db_manager
 from repositories.schedule_repository import ScheduleRepository
 from models.schedule import Schedule
+from states.get_state import get_state
+from repositories.shift_repository import ShiftRepository
 
 router = APIRouter()
 
@@ -64,6 +66,37 @@ def delete_schedule(id: int):
             raise HTTPException(status_code=404, detail="Schedule not found")
         schedule_repo.delete(id)
         return {"message": "Schedule Deleted Successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+class ShiftRequest(BaseModel):
+    action: str
+
+@router.put("/{id}/state")
+def update_schedule_state(id: int, request: ShiftRequest):
+
+    shift_repo = ShiftRepository(db_manager)
+
+    try:
+        existing = schedule_repo.get(id)
+        if existing is None:
+            raise HTTPException(status_code=404, detail="Schedule not found")
+        
+        if request.action not in ["publish", "complete"]:
+            raise HTTPException(status_code=400, detail="Action must be publish or complete")
+
+        info = existing.get_schedule_info()
+        state = get_state(info["state"], id, schedule_repo, shift_repo)
+
+        if request.action == "publish":
+            state.publish()
+        if request.action == "complete":
+            state.complete()
+
+        return {"message": f"Schedule state updated to {request.action} successfully"}   
+    
     except HTTPException:
         raise
     except Exception as e:
