@@ -29,7 +29,7 @@ Create a python folder inside dependencies
 
 Run 
 ```bash
-pip install fastapi mangum mysql-connector-python -t dependencies/python .
+pip install fastapi mangum mysql-connector-python resend -t dependencies/python .
 ```
 to bundle libraries
 
