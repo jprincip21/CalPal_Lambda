@@ -29,7 +29,13 @@ Create a python folder inside dependencies
 
 Run 
 ```bash
-pip install fastapi mangum mysql-connector-python resend -t dependencies/python .
+pip freeze > requirements.txt
+
+```
+Then
+```bash
+pip install -r requirements.txt --platform manylinux2014_x86_64 --target dependencies/python --only-binary=:all:
+
 ```
 to bundle libraries
 
