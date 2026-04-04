@@ -41,6 +41,6 @@ class NotificationService():
             self.r.send({
                 "from": "CalPal <calpal@jprincip.me>",
                 "to": employee_email,
-                "Subject": f"{location_name} Schedule | {start_date} - {end_date}",
+                "subject": f"{location_name} Schedule | {start_date} - {end_date}",
                 "html": "<p>Schedule</p>"
             })
