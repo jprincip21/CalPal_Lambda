@@ -8,6 +8,7 @@ import resend
 from repositories.schedule_repository import ScheduleRepository
 from repositories.shift_repository import ShiftRepository
 from repositories.employee_repository import EmployeeRepository
+from datetime import datetime
 
 class NotificationService():
     def __init__(self, 
@@ -27,8 +28,8 @@ class NotificationService():
         info = schedule.get_schedule_info()
         location_id = info["location_id"]
         location_name = info["location_name"]
-        start_date = info["start_date"]
-        end_date = info["end_date"]
+        start_date = format_date(info["start_date"])
+        end_date = format_date(info["end_date"])
 
         shifts = self.__shift_repo.get_shifts_by_schedule_id(schedule_id)
         
@@ -44,3 +45,12 @@ class NotificationService():
                 "subject": f"{location_name} Schedule | {start_date} - {end_date}",
                 "html": "<p>Schedule</p>"
             })
+
+def format_date(date):
+    #convert date to date object (YYYY-MM-DD)
+    date_object = datetime.strptime(date, "%Y-%m-%d")
+
+    # Convert date object into reformatted string (Month Day, Year)
+    formatted_date = date_object.strftime("%B %d, %Y")
+    return formatted_date
+
